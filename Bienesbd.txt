@@ -1,0 +1,73 @@
+DROP DATABASE IF EXISTS bienes;
+create database bienes;
+use bienes;
+
+create table usuario(
+idUsuario int PRIMARY key AUTO_INCREMENT,
+nombre varchar(50),
+clave varchar(50),
+tipo int,
+estado varchar(50),
+creado_en varchar(250)
+);
+
+create table acceso(
+idAcceso int PRIMARY key AUTO_INCREMENT,
+idUsuario int,
+accion varchar(50),
+fecha varchar(50)
+);
+
+create table empleado(
+idEmpleado int PRIMARY key AUTO_INCREMENT,
+nombres varchar(50),
+apellidos varchar(50),
+dui varchar(50),
+area varchar(50)
+);
+
+create table propiedad(
+idPropiedad int PRIMARY key AUTO_INCREMENT,
+nombre varchar(50),
+direccion varchar(150),
+telefono varchar(50),
+foto varchar(250),
+estado varchar(50)
+);
+
+
+create table activo(
+codigo int PRIMARY key AUTO_INCREMENT,
+serial varchar(100),
+nombre varchar(50),
+descripcion varchar(50),
+propiedad int,
+encargado int,
+fechaCompra varchar(50),
+estado varchar(50),
+categoria varchar(70),
+cantidad int,
+foto varchar(250)
+);
+
+create table traspaso(
+idTraspaso int PRIMARY key AUTO_INCREMENT,
+activo int,
+encargadoNuevo int,
+encargadoAnterior int,
+fechaTraspaso varchar(50)
+);
+
+alter table acceso add constraint fk_idUsuario foreign key (idUsuario) references usuario(idUsuario) on delete cascade on update cascade;
+alter table activo add constraint fk_propiedad foreign key (propiedad) references propiedad(idPropiedad)on delete cascade on update cascade;
+alter table activo add constraint fk_empleado foreign key (encargado) references empleado(idEmpleado) on delete cascade on update cascade;
+alter table traspaso add constraint fk_traspaso_activo foreign key (activo) references activo(codigo) on delete cascade on update cascade;
+alter table traspaso add constraint fk_traspaso_NuevoE foreign key (encargadoNuevo) references empleado(idEmpleado) on delete cascade on update cascade;
+alter table traspaso add constraint fk_traspaso_OldE foreign key (encargadoAnterior) references empleado(idEmpleado) on delete cascade on update cascade;
+
+
+insert into usuario values(null,'admin','123',1,'Activo','18-10-2022');
+insert into usuario values(null,'vendedor','123',2,'Activo','18-10-2022');
+insert into usuario values(null,'gerente','123',2,'Activo','18-10-2022');
+INSERT INTO `empleado` (`idEmpleado`, `nombres`, `apellidos`, `dui`, `area`) VALUES ('1', 'Roberto Armijo', 'Armijo Jiménez', '01515999-5', 'Informatica');
+INSERT INTO `empleado` (`idEmpleado`, `nombres`, `apellidos`, `dui`, `area`) VALUES ('2', 'Sandra Natalia', 'Menjivar Romero', '01515777-6', 'Informatica');
